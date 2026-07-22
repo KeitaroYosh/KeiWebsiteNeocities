@@ -1,0 +1,184 @@
+.page{
+width:900px;
+background:white;
+
+border-radius:50px;
+
+padding:40px;
+
+box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+}
+
+html {
+margin: 0;
+height: 100%;
+background: #111; /* fallback while three.js loads */
+font-family: system-ui, sans-serif;
+color: #fff;
+overflow: hidden;
+}
+
+body {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 20px; /* spacing between stacked pages */
+margin: 0;
+min-height: 100vh;
+height: 100%;
+background: #11111100; /* fallback while three.js loads */
+color: #fff;
+overflow: hidden;
+}
+
+.center {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.center-text {
+  max-width: 500px;       /* Keeps the text block from stretching too wide */
+  text-align: center;
+}
+
+          /* ================ Stuff literally on the middle of the screen ================= */
+
+/* 1. The card is the "stage". Everything inside it is positioned
+      relative to this box, because it has position: relative. */
+.hero-card {
+  position: relative;
+  width: 100%;
+  max-width: 1280px;
+  /*aspect-ratio: 16 / 9;*/
+  border-radius: 1px;
+  overflow: hidden; /* clips the image to the rounded corners */
+  /*box-shadow: 0 8px 30px rgba(0,0,0,0.25);*/
+}
+ 
+/* 2. The image just fills the card normally, like a background. */
+.hero-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills the box without distorting, crops overflow */
+  display: block;
+}
+ 
+/* 3. The text box floats ON TOP because it's position: absolute
+      + the parent (.hero-card) is position: relative. */
+.hero-text {
+  position: absolute;
+  top: 15%;
+  right: 18%;
+  max-width: 24%;             /* the "limited to a box" part */
+  background: rgba(20, 20, 30, 0);
+  color: #473c86;
+  padding: 20px 24px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);  /* soft glass effect so text stays readable over busy art */
+}
+ 
+.hero-text h1 {
+  margin: 0 0 8px;
+  font-size: clamp(20px, 4vw, 32px);
+  line-height: 1.2;
+}
+ 
+.hero-text p {
+  margin: 0;
+  font-size: clamp(13px, 2vw, 15px);
+  opacity: 0.9;
+  line-height: 1.5;
+}
+ 
+/* 4. The button, same trick, positioned wherever you like. */
+.hero-button {
+  position: absolute;
+  bottom: 25%;
+  right: 22%;
+  padding: 12px 28px;
+  background: #ffffff00;
+  color: #111;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0);
+  transition: transform 0.15s ease;
+  width: 18%;
+  backdrop-filter: hue-rotate(180deg);
+  backdrop-filter: blur(1.4px);
+}
+ 
+.hero-button:hover {
+  transform: scale(1.05);
+}
+
+          /* ================ Background ================= */
+
+/* The canvas sits behind everything, fixed to the viewport. */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none; /* clicks pass straight through to your real content */
+  display: block;
+}
+
+          /* ================ Audio ================= */
+/*
+.demo-content-audio {
+  max-width: 500px;
+  margin: 15vh auto;
+  padding: 30px;
+  text-align: center;
+} */
+
+/* ---------- The music toggle button ---------- */
+/*
+#music-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  z-index: 10;
+}
+
+#music-toggle:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.06);
+}
+
+#music-toggle svg {
+  width: 22px;
+  height: 22px;
+  fill: #fff;
+  transition: opacity 0.2s ease;
+} */
+
+/* Both icons stack on top of each other; it just fades whichever is active. */
+/*
+#music-toggle .icon {
+  position: absolute;
+  opacity: 0;
+}
+#music-toggle .icon.active {
+  opacity: 1;
+}
+  */
