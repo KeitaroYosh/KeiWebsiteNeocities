@@ -138,9 +138,7 @@ align-items: center;
   box-sizing: border-box;
 }
 
-/* ---- Rock-poster styling ----
-    appearance: none strips the browser's native look so we can
-    fully restyle it, including swapping the arrow icon below. */
+/* ---- Rock-poster styling ---- */
 #dropdown-row select {
   flex: 1 1 140px;
   padding: 12px 40px 12px 16px;  /* extra right padding makes room for the custom arrow */
