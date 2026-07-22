@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<head>
+    <title>Home</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="center" style="background-color: #353540;">
+
+
+    <!-- GRAIN OVERLAY -->
+    <div id="grain-overlay">
+        <div class="grain-layer" id="grain-layer-a"></div>
+        <div class="grain-layer" id="grain-layer-b"></div>
+    </div>
+
+    <script>
+        /* ============================================================
+        CONFIG
+        ============================================================ */
+        const GRAIN_IMAGES = [
+            'grain1.jpg',
+            'grain2.jpg',
+            'grain3.jpg',
+            'grain4.jpg',
+        ];
+        const SWAP_INTERVAL = 180; // ms between texture changes
+        /* ============================================================ */
+
+        const layerA = document.getElementById('grain-layer-a');
+        const layerB = document.getElementById('grain-layer-b');
+        let showingA = true;
+        let index = 0;
+
+        // Preload so the swap doesn't stutter on first paint of a new image
+        GRAIN_IMAGES.forEach(src => { const img = new Image(); img.src = src; });
+
+        layerA.style.backgroundImage = `url(${GRAIN_IMAGES[0]})`;
+        index = 1 % GRAIN_IMAGES.length;
+        layerB.style.backgroundImage = `url(${GRAIN_IMAGES[index]})`;
+
+        function swapGrain() {
+            const nextIndex = (index + 1) % GRAIN_IMAGES.length;
+            const incoming = showingA ? layerB : layerA;
+            const outgoing = showingA ? layerA : layerB;
+
+            incoming.style.backgroundImage = `url(${GRAIN_IMAGES[nextIndex]})`;
+            incoming.style.opacity = 1;
+            outgoing.style.opacity = 0;
+
+            showingA = !showingA;
+            index = nextIndex;
+        }
+
+        setInterval(swapGrain, SWAP_INTERVAL);
+        </script>
+
+    <!-- we goin yeah -->
+
+    <div class="welcome-box ">
+        <h1 style="font-family: BringMeAHelicopter; text-align: center; font-size: 80px;">WELCOME!!</h1>
+        <div id="dropdown-row"></div>
+        <p style="text-align: center;">Guys hold on I'm not done with this...</p>
+    </div>
+
+    <script>
+        /* ============================================================
+        CONFIG
+        ============================================================ */
+        const DROPDOWNS = [
+            {
+                label: 'Music',
+                options: ['OSTs', 'Originals', 'Music doodles'],
+            },
+            {
+                label: 'Artworks',
+                options: ['Commissions', 'Personal finished works', 'Doodles'],
+            },
+            {
+                label: "Projects I'm in",
+                options: ['MYTH (Roblox)', 'Breakpoint (Roblox)', 'MURDER DRONES: RETRIBUTION (MD:R)', 'Objects in Terror (Roblox)'],
+            },
+        ];
+        /* ============================================================ */
+
+        function renderDropdowns() {
+            const row = document.getElementById('dropdown-row');
+            row.innerHTML = ''; // clear and rebuild from CONFIG every time
+
+            DROPDOWNS.forEach((dropdown, i) => {
+                const select = document.createElement('select');
+                select.id = `dropdown-${i}`;
+
+                // First option acts as a visible label/placeholder
+                const placeholder = document.createElement('option');
+                placeholder.textContent = dropdown.label;
+                placeholder.disabled = false;
+                placeholder.selected = true;
+                select.appendChild(placeholder);
+
+                dropdown.options.forEach(optionText => {
+                const opt = document.createElement('option');
+                opt.value = optionText;
+                opt.textContent = optionText;
+                select.appendChild(opt);
+                });
+
+                row.appendChild(select);
+            });
+        }
+
+        renderDropdowns();
+
+        function addDropdown(label, options = []) {
+            DROPDOWNS.push({ label, options });
+            renderDropdowns();
+        }
+
+        function removeDropdown(index) {
+            DROPDOWNS.splice(index, 1);
+            renderDropdowns();
+        }
+
+        function addOption(dropdownIndex, optionText) {
+            DROPDOWNS[dropdownIndex].options.push(optionText);
+            renderDropdowns();
+        }
+
+        function removeOption(dropdownIndex, optionText) {
+            const dropdown = DROPDOWNS[dropdownIndex];
+            dropdown.options = dropdown.options.filter(o => o !== optionText);
+            renderDropdowns();
+        }
+    </script>
+
+    <div class="page">
+        <div class="center" style="margin-top: 5%;">
+            <img src="pictures/Kei idle.webp" width="30%">
+        </div>
+        <br>
+    </div>
+
+</body>

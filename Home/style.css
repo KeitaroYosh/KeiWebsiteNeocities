@@ -1,0 +1,184 @@
+/* I LOVE FONTS */
+@font-face {
+  font-family: 'Eternalo';
+  src: url(fonts/Eternalo.ttf) format('truetype')
+}
+@font-face {
+  font-family: 'BringMeAHelicopter';
+  src: url(fonts/Bring\ Me\ A\ Helicopter!.otf) format('opentype')
+}
+
+.side-by-side-container {
+  display: flex;          /* Aligns items horizontally */
+  align-items: center;    /* Vertically centers the text and GIFs */
+  justify-content: center;/* Centers everything on the webpage */
+  gap: 20px;              /* Creates a clean space between items */
+}
+
+.side-by-side-container img {
+  width: 100px;           /* Adjusts size to keep your GIFs uniform */
+  height: auto;
+}
+
+.center-text {
+  max-width: 500px;       /* Keeps the text block from stretching too wide */
+  text-align: center;
+}
+
+body {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 20px; /* spacing between stacked pages */
+margin: 0;
+min-height: 100vh;
+}
+
+.page{
+width:990px;
+background:#444159;
+
+border-radius:50px;
+
+padding:2px;
+
+box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+}
+
+.header{
+width:100%;
+height: 180px;
+background:#9FB1BC;
+}
+
+.welcome-box {
+  background:#9fb1bc;
+  border-radius: 20px;
+  padding: 40px;
+  width:100%;
+  height: 180px;
+  text-align: center;
+}
+
+.welcome-box h1 {
+  margin: 0 0 30px;
+  font-size: 32px;
+  letter-spacing: 2px;
+}
+
+/*
+padding:1px;
+
+box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.5);
+} */
+
+.center {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+/* GRAIN */
+/* ============================================================
+  The overlay itself: fixed over the whole viewport, ignores
+  clicks, and blended so it reads as texture, not an image.
+  ============================================================ */
+#grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: multiply;
+  opacity: 0.60;
+
+  /* THE RADIAL MASK — Transparent (invisible) in the middle, fully visible toward the edges. */
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0) 30%,
+    rgba(0,0,0,1) 75%
+  );
+  mask-image: radial-gradient(
+    circle at center,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0) 30%,
+    rgba(0,0,0,1) 75%
+  );
+}
+
+
+.grain-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 2s ease-in-out;
+}
+
+#grain-layer-a { opacity: 1; }
+#grain-layer-b { opacity: 0; }
+
+/* ===================================
+            Dropdown stuffs
+  ===================================== */
+
+/* ============================================================
+    THE DROPDOWN ROW — this is the part that matters.
+    display: flex + gap means however many dropdowns exist,
+    they space themselves evenly with no manual math.
+    ============================================================ */
+#dropdown-row {
+  display: flex;
+  flex-wrap: wrap;          /* so it doesn't overflow on narrow screens */
+  justify-content: center;
+  gap: 20px;                /* this IS the even spacing, adjust freely */
+  padding-inline: clamp(16px, 5vw, 80px);
+  box-sizing: border-box;
+}
+
+/* ---- Rock-poster styling ----
+    appearance: none strips the browser's native look so we can
+    fully restyle it, including swapping the arrow icon below. */
+#dropdown-row select {
+  flex: 1 1 140px;
+  padding: 12px 40px 12px 16px;  /* extra right padding makes room for the custom arrow */
+  border: 3px solid #000;
+  border-radius: 2px;             /* sharp-ish corners read more "poster" than soft rounding */
+  background-color: #1a1a24;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* Custom dropdown arrow, drawn as an SVG background image
+      instead of relying on the browser's built-in one */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px;
+
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+#dropdown-row select:hover {
+  border-color: #ff2e63;
+  transform: translateY(-1px);
+}
+
+#dropdown-row select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.4);
+}
+
+#dropdown-row select option {
+  background: #1a1a24;
+  color: #fff;
+}
