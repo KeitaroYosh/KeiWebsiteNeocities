@@ -32,18 +32,45 @@ align-items: center;
 gap: 20px; /* spacing between stacked pages */
 margin: 0;
 min-height: 100vh;
+font-family: monospace;
+font-size: 16px;
 }
 
-.page{
-width:990px;
-background:#444159;
+/* ============================================================
+     THE ROW CONTAINER — this is the whole trick.
+     display: flex with the default flex-direction (row) puts
+     children side-by-side instead of stacked.
+     ============================================================ */
+.page-row {
+  display: flex;
+  flex-direction: row;      /* explicit for clarity — this is the default anyway */
+  gap: 20px;                /* space between the two pages */
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: stretch;     /* both pages match height automatically */
+}
 
-border-radius:50px;
+/* ---- Shared page styling (same look, different widths) ---- */
+.page {
+  background: #444159;
+  border-radius: 50px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+  min-height: 300px;
+  box-sizing: border-box;
+}
 
-padding:2px;
+/* ============================================================
+    THE WIDTH CONTROL — change these two numbers whenever you
+    want to resize. flex: 2 vs flex: 1 means "always twice as
+    wide," regardless of screen size. Try 3/1, 1/1, whatever.
+    ============================================================ */
+#page-1 {
+  flex: 3;
+}
 
-box-shadow:
-    0 10px 30px rgba(0,0,0,.15);
+#page-2 {
+  flex: 1;
 }
 
 .header{
@@ -54,8 +81,7 @@ background:#9FB1BC;
 
 .welcome-box {
   background:#9fb1bc;
-  border-radius: 20px;
-  padding: 40px;
+  padding: 40px 0 60px;
   width:100%;
   height: 180px;
   text-align: center;
@@ -131,14 +157,17 @@ align-items: center;
     ============================================================ */
 #dropdown-row {
   display: flex;
-  flex-wrap: wrap;          /* so it doesn't overflow on narrow screens */
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;                /* this IS the even spacing, adjust freely */
+  gap: 16px;
   padding-inline: clamp(16px, 5vw, 80px);
   box-sizing: border-box;
+  width: 100%;
 }
 
-/* ---- Rock-poster styling ---- */
+/* ---- Rock-poster styling ----
+    appearance: none strips the browser's native look so we can
+    fully restyle it, including swapping the arrow icon below. */
 #dropdown-row select {
   flex: 1 1 140px;
   padding: 12px 40px 12px 16px;  /* extra right padding makes room for the custom arrow */
@@ -179,4 +208,94 @@ align-items: center;
 #dropdown-row select option {
   background: #1a1a24;
   color: #fff;
+}
+
+/* ============================================================
+    THE CUSTOM DROPDOWN
+    Each one is a <div class="dd"> containing:
+      - a <button> (what's always visible — the closed state)
+      - a <ul> (the option list — hidden until opened)
+    Because both are plain HTML we fully control, not the browser.
+    ============================================================ */
+.dd {
+  position: relative;      /* anchors the option list below it */
+  flex: 1 1 140px;
+}
+
+.dd-toggle {
+  width: 100%;
+  padding: 12px 40px 12px 16px;
+  border: 3px solid #000;
+  border-radius: 2px;
+  background-color: #1a1a24;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  text-align: left;
+
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px;
+
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.dd-toggle:hover {
+  border-color: #ff2e63;
+  transform: translateY(-1px);
+}
+
+/* Flip the arrow when open — purely cosmetic, driven by a class
+    we toggle in JS (see .dd.open below) */
+.dd.open .dd-toggle {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff2e63'><path d='M7 14l5-5 5 5z'/></svg>");
+  border-color: #ff2e63;
+}
+
+/* The option list — this is the part native <select> would NEVER
+    let you style. Now it's just a div, so anything CSS can do applies:
+    custom fonts, borders, spacing, scrollbars, hover states, animation. */
+.dd-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #1a1a24;
+  border: 3px solid #000;
+  border-radius: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  z-index: 20;
+
+  /* Hidden by default; JS toggles the .open class on the parent */
+  display: none;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.dd.open .dd-menu {
+  display: block;
+}
+
+.dd-menu li {
+  padding: 10px 12px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.1s ease;
+  color: #fff;
+  font-family: Eternalo;
+}
+
+.dd-menu li:hover,
+.dd-menu li.focused {
+  background: #ff2e63;
 }
