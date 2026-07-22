@@ -51,91 +51,139 @@
         }
 
         setInterval(swapGrain, SWAP_INTERVAL);
-        </script>
+    </script>
 
     <!-- we goin yeah -->
 
     <div class="welcome-box ">
-        <h1 style="font-family: BringMeAHelicopter; text-align: center; font-size: 80px;">WELCOME!!</h1>
+        <h1 style="font-family: BringMeAHelicopter; text-align: center; font-size: 80px;">SET THE STAGE!!</h1>
         <div id="dropdown-row"></div>
-        <p style="text-align: center;">Guys hold on I'm not done with this...</p>
+        <p style="text-align: center;">Guys hold on I'm not done with this site...</p>
     </div>
 
     <script>
         /* ============================================================
-        CONFIG
+        CONFIG — same idea as before: edit this array to add/remove
+        dropdowns or options. The difference from last time is each
+        option now has a "url" — clicking it navigates there.
+
+        Use "#" or leave url blank for options that shouldn't navigate
+        anywhere yet (handy while you're still building pages).
         ============================================================ */
         const DROPDOWNS = [
-            {
-                label: 'Music',
-                options: ['OSTs', 'Originals', 'Music doodles'],
-            },
-            {
-                label: 'Artworks',
-                options: ['Commissions', 'Personal finished works', 'Doodles'],
-            },
-            {
-                label: "Projects I'm in",
-                options: ['MYTH (Roblox)', 'Breakpoint (Roblox)', 'MURDER DRONES: RETRIBUTION (MD:R)', 'Objects in Terror (Roblox)'],
-            },
+        {
+            label: 'Music',
+            options: [
+                { text: 'OSTs', url: '#' },
+                { text: 'Originals', url: '#' },
+                { text: 'Music doodles', url: '#' },
+            ],
+        },
+        {
+            label: 'Videos',
+            options: [
+                { text: 'Animations', url: '#' },
+                { text: 'Edits', url: '#' },
+            ],
+        },
+        {
+            label: 'Artworks',
+            options: [
+                { text: 'Commissions', url: '#' },
+                { text: 'Personal work', url: '#' },
+                { text: 'Doodles', url: '#' },
+            ],
+        },
         ];
         /* ============================================================ */
 
         function renderDropdowns() {
             const row = document.getElementById('dropdown-row');
-            row.innerHTML = ''; // clear and rebuild from CONFIG every time
+            row.innerHTML = '';
 
-            DROPDOWNS.forEach((dropdown, i) => {
-                const select = document.createElement('select');
-                select.id = `dropdown-${i}`;
+            DROPDOWNS.forEach((dropdown) => {
+                    // --- Build the wrapper ---
+                    const wrap = document.createElement('div');
+                    wrap.className = 'dd';
 
-                // First option acts as a visible label/placeholder
-                const placeholder = document.createElement('option');
-                placeholder.textContent = dropdown.label;
-                placeholder.disabled = false;
-                placeholder.selected = true;
-                select.appendChild(placeholder);
+                    // --- Build the visible button (closed state) ---
+                    const toggle = document.createElement('button');
+                    toggle.type = 'button';
+                    toggle.className = 'dd-toggle';
+                    toggle.textContent = dropdown.label;
 
-                dropdown.options.forEach(optionText => {
-                const opt = document.createElement('option');
-                opt.value = optionText;
-                opt.textContent = optionText;
-                select.appendChild(opt);
+                    // --- Build the option list (hidden until opened) ---
+                    const menu = document.createElement('ul');
+                    menu.className = 'dd-menu';
+
+                    dropdown.options.forEach(option => {
+                    const li = document.createElement('li');
+                    li.textContent = option.text;
+                    li.addEventListener('click', () => {
+                        if (option.url) {
+                        window.location.href = option.url; // <-- the actual navigation
+                        }
+                    });
+                    menu.appendChild(li);
                 });
 
-                row.appendChild(select);
+                // --- Toggle open/closed when the button is clicked ---
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = wrap.classList.contains('open');
+                    closeAllDropdowns();          // close any other open one first
+                    if (!isOpen) wrap.classList.add('open');
+                });
+
+                wrap.appendChild(toggle);
+                wrap.appendChild(menu);
+                row.appendChild(wrap);
             });
         }
 
+        function closeAllDropdowns() {
+            document.querySelectorAll('.dd.open').forEach(el => el.classList.remove('open'));
+        }
+
+        // Clicking anywhere outside a dropdown closes it
+        document.addEventListener('click', closeAllDropdowns);
+
+        // Pressing Escape closes it too
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAllDropdowns();
+        });
+
         renderDropdowns();
-
-        function addDropdown(label, options = []) {
-            DROPDOWNS.push({ label, options });
-            renderDropdowns();
-        }
-
-        function removeDropdown(index) {
-            DROPDOWNS.splice(index, 1);
-            renderDropdowns();
-        }
-
-        function addOption(dropdownIndex, optionText) {
-            DROPDOWNS[dropdownIndex].options.push(optionText);
-            renderDropdowns();
-        }
-
-        function removeOption(dropdownIndex, optionText) {
-            const dropdown = DROPDOWNS[dropdownIndex];
-            dropdown.options = dropdown.options.filter(o => o !== optionText);
-            renderDropdowns();
-        }
     </script>
 
-    <div class="page">
-        <div class="center" style="margin-top: 5%;">
-            <img src="pictures/Kei idle.webp" width="30%">
+    <div class="page-row">
+        <div class="page" id="page-1" style="color: #fff;">
+            <div class="center" style="margin-top: 5%;">
+                <img src="pictures/welcome.png" width="100%">
+            </div>
+            <br>
+
+            <h1 style="font-family: Eternalo; margin-left: 8%;">Meet... well, me!</h1>
+            <p style="text-indent: 10%;">Hey hooo!! I go by MANY names, but call me Keitaro!
+                I do many things but mainly, making illustrations, composing music, singing, and video editing.</p>
+            <br>
+            <p>This whole site is a side project of mine that I'm not sure I'll fully finish.
+                I'm learning how to code and basically got HTML and CSS down, and so far, Java has kinda fascinated me HAHA</p>
+            <br>
+            <p>At the time of writing this (7/22/26), I'm still figuring out things!... And also the dropdowns at the top don't do anything... Yet... I'm figuring it out</p>
         </div>
-        <br>
+
+        <div class="page" id="page-2">
+            <div class="center" style="margin-top: 5%;">
+                <img src="pictures/Kei idle.webp" width="100%">
+            </div>
+            <br>
+            <p style="font-family: Eternalo; color: azure; letter-spacing: 2px;">↑↑↑ This page is operated by this idiot ♦♥</p>
+            <br>
+            <div class="page" style="background: #b3bcd8;">
+                <h2 style="font-family: BringMeAHelicopter; font-size: 40px; ">PROGRESS OF THE SITE!? NOT EVEN HALFWAY!! HAHA</h2>
+            </div>
+        </div>
     </div>
 
 </body>
