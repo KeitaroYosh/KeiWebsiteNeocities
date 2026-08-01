@@ -37,7 +37,7 @@ font-size: 16px;
 }
 
 /* ============================================================
-     THE ROW CONTAINER — this is the whole trick.
+     THE ROW CONTAINER
      display: flex with the default flex-direction (row) puts
      children side-by-side instead of stacked.
      ============================================================ */
@@ -63,7 +63,7 @@ font-size: 16px;
 /* ============================================================
     THE WIDTH CONTROL — change these two numbers whenever you
     want to resize. flex: 2 vs flex: 1 means "always twice as
-    wide," regardless of screen size. Try 3/1, 1/1, whatever.
+    wide," regardless of screen size. (I did not know this -Kei)
     ============================================================ */
 #page-1 {
   flex: 3;
@@ -92,13 +92,6 @@ background:#9FB1BC;
   font-size: 32px;
   letter-spacing: 2px;
 }
-
-/*
-padding:1px;
-
-box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.5);
-} */
 
 .center {
 display: flex;
@@ -151,7 +144,7 @@ align-items: center;
   ===================================== */
 
 /* ============================================================
-    THE DROPDOWN ROW — this is the part that matters.
+    THE DROPDOWN ROW
     display: flex + gap means however many dropdowns exist,
     they space themselves evenly with no manual math.
     ============================================================ */
