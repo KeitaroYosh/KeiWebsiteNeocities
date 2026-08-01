@@ -3,7 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <title>Tetris</title>
-        <link href="Tetris.css" rel="stylesheet">
+    <link href="Tetris.css" rel="stylesheet">
+
+    <style>
+        #tetris-window {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .game-wrap {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .game-panel {
+            background: #1c2733;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,.25);
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .board-outer {
+            position: relative;
+        }
+
+        #board {
+            display: block;
+            background: #101822;
+            border-radius: 4px;
+        }
+
+        .side-col {
+            width: 140px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .side-col h2 {
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin: 0 0 8px;
+            color: #9fb1bc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .mini-canvas, #hold-canvas {
+            display: block;
+            background: #101822;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            transition: opacity .15s ease;
+        }
+        #hold-canvas.used { opacity: .35; }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        .stat-row span:last-child { color: #f4d035; font-weight: bold; }
+
+        .controls-mini { font-size: 11px; line-height: 1.6; opacity: .85; }
+        .controls-mini div { display: flex; justify-content: space-between; gap: 8px; }
+        .controls-mini b { color: #9fb1bc; }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10,15,20,.92);
+            border-radius: 4px;
+            display: flex; /* shown by default — this is the start screen */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .overlay.hide { display: none; }
+        .overlay h2 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 22px;
+            letter-spacing: 1px;
+            margin: 0;
+            color: #fff;
+        }
+        .overlay p {
+            margin: 0;
+            font-size: 11px;
+            line-height: 1.5;
+            opacity: .7;
+            max-width: 190px;
+        }
+        .overlay button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            background: #9fb1bc;
+            color: #1c2733;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .overlay button:hover { background: #b7c6cf; }
+    </style>
 </head>
 
 <body class="center">
@@ -31,9 +143,54 @@
 
             <hr>
 
-            <div style="height: 340px;"></div>
-            <!-- Extra space like a placeholder where the game would be LOL -->
+            <!-- GAME WINDOW -->
+            <div id="tetris-window">
+                <div class="game-wrap">
+
+                    <div class="game-panel board-outer">
+                        <canvas id="board"></canvas>
+                        <div class="overlay" id="overlay">
+                            <h2 id="overlay-title">TETRIS</h2>
+                            <p id="overlay-sub">← → move · ↑ rotate · ↓ soft drop · Space hard drop · C hold</p>
+                            <button id="overlay-btn">START</button>
+                        </div>
+                    </div>  
+
+                    <div class="side-col">
+                        <div class="game-panel">
+                            <h2>Hold</h2>
+                            <canvas class="mini-canvas" id="hold-canvas"></canvas>
+                        </div>
+                        <div class="game-panel">
+                            <h2>Next</h2>
+                            <canvas class="mini-canvas" id="next-0"></canvas>
+                            <canvas class="mini-canvas" id="next-1"></canvas>
+                            <canvas class="mini-canvas" id="next-2"></canvas>
+                        </div>
+                        <div class="game-panel">
+                            <h2>Stats</h2>
+                            <div class="stat-row"><span>Score</span><span id="stat-score">0</span></div>
+                            <div class="stat-row"><span>Lines</span><span id="stat-lines">0</span></div>
+                            <div class="stat-row"><span>Level</span><span id="stat-level">1</span></div>
+                        </div>
+                        <div class="game-panel controls-mini">
+                            <h2>Controls</h2>
+                            <div><b>&larr;&rarr;</b><span>Move</span></div>
+                            <div><b>&uarr;</b><span>Rotate</span></div>
+                            <div><b>&darr;</b><span>Soft drop</span></div>
+                            <div><b>Space</b><span>Hard drop</span></div>
+                            <div><b>C</b><span>Hold</span></div>
+                            <div><b>P</b><span>Pause</span></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /GAME WINDOW -->
+
         </div>
     </div>
 
+    <script src="Tetris.js" defer></script>
 </body>
+</html>
