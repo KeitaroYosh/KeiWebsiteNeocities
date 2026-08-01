@@ -63,12 +63,7 @@
 
     <script>
         /* ============================================================
-        CONFIG — same idea as before: edit this array to add/remove
-        dropdowns or options. The difference from last time is each
-        option now has a "url" — clicking it navigates there.
-
-        Use "#" or leave url blank for options that shouldn't navigate
-        anywhere yet (handy while you're still building pages).
+        CONFIG
         ============================================================ */
         const DROPDOWNS = [
         {
@@ -91,7 +86,13 @@
             options: [
                 { text: 'Commissions', url: '#' },
                 { text: 'Personal work', url: '#' },
-                { text: 'Doodles', url: '#' },
+                { text: 'Doodles', url: 'Doodles.html' },
+            ],
+        },
+                {
+            label: 'Fun',
+            options: [
+                { text: 'TETRIS', url: '#' },
             ],
         },
         ];
@@ -186,7 +187,7 @@
 
         <div class="page" id="page-2">
             <div class="center" style="margin-top: 5%;">
-                <img src="pictures/Kei idle.webp" width="100%">
+                <img src="pictures/Kei idle.gif" width="100%">
             </div>
             <br>
             <p style="font-family: Eternalo; color: azure; letter-spacing: 2px;">↑↑↑ This page is operated by this idiot ♦♥</p>
