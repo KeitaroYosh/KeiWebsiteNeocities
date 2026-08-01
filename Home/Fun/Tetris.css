@@ -1,0 +1,105 @@
+.side-by-side-container {
+  display: flex;          /* Aligns items horizontally */
+  align-items: center;    /* Vertically centers the text and GIFs */
+  justify-content: center;/* Centers everything on the webpage */
+  gap: 20px;              /* Creates a clean space between items */
+}
+
+.side-by-side-container img {
+  width: 100px;           /* Adjusts size to keep your GIFs uniform */
+  height: auto;
+}
+
+.center-text {
+  max-width: 500px;       /* Keeps the text block from stretching too wide */
+  text-align: center;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: #253442;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* spacing between stacked pages */
+  margin: 0;
+  min-height: 100vh;
+  font-family: monospace;
+  font-size: 16px;
+}
+
+img {
+  image-rendering: pixelated;       /* keeps sprite pixels crisp when scaled */
+  image-rendering: -moz-crisp-edges; /* Firefox fallback */
+}
+
+/* ============================================================
+     THE ROW CONTAINER
+     display: flex with the default flex-direction (row) puts
+     children side-by-side instead of stacked.
+     ============================================================ */
+.page-row {
+  display: flex;
+  flex-direction: row;      /* explicit for clarity — this is the default anyway */
+  gap: 20px;                /* space between the two pages */
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: stretch;     /* both pages match height automatically */
+}
+
+/* ---- Shared page styling (same look, different widths) ---- */
+.page {
+  background: #444159;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 30px 0px rgba(0,0,0,.15);
+  min-height: 300px;
+  width: 60%;
+  box-sizing: border-box;
+  margin-top: 50px;
+}
+
+/* ============================================================
+    THE WIDTH CONTROL — change these two numbers whenever you
+    want to resize. flex: 2 vs flex: 1 means "always twice as
+    wide," regardless of screen size. (I did not know this -Kei)
+    ============================================================ */
+#page-1 {
+  flex: 3;
+}
+
+#page-2 {
+  flex: 1;
+}
+
+.header{
+width:100%;
+height: 180px;
+background:#9FB1BC;
+}
+
+.center {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.welcome-box {
+  background:#9fb1bc;
+  padding: 40px 0 60px;
+  width:100%;
+  height: 180px;
+  text-align: center;
+}
+
+.welcome-box h1 {
+  margin: 0 0 30px;
+  font-size: 32px;
+  letter-spacing: 2px;
+}
