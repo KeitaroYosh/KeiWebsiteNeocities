@@ -1,3 +1,5 @@
+/* Copied over from another css file I forgot which one... */
+
 .side-by-side-container {
   display: flex;          /* Aligns items horizontally */
   align-items: center;    /* Vertically centers the text and GIFs */
@@ -102,4 +104,9 @@ align-items: center;
   margin: 0 0 30px;
   font-size: 32px;
   letter-spacing: 2px;
+}
+
+h1, p {
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 1px;
 }
