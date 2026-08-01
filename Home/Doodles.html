@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>???</title>
+        <link href="Doodles.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="filler-top"></div>
+
+  <div class="tree-wrapper">
+    <img id="tree" class="tree-img" src="tree.gif" alt="a tree">
+
+    <div id="dialogue-box" class="dialogue-box hidden">
+      <div id="dialogue-text" class="dialogue-text"></div>
+      <div id="dialogue-choices" class="dialogue-choices hidden">
+        <span id="choice-no" class="choice">No</span>
+        <span id="choice-yes" class="choice">Yes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filler-bottom"></div>
+
+  <audio id="tree-audio" loop preload="auto">
+    <source src="https://file.garden/amdlLpUqZzagxreo/man.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    /* ============================================================
+      CONFIG — edit dialogue text here freely
+      ============================================================ */
+    const DIALOGUE = {
+      first: [
+        "(Well, there is a man here.)",
+        "(He offered you something.)"
+      ],
+      yes: [
+        "(You received an Egg.)"
+      ],
+      no: [
+        "(Then he needn't be here.)"
+      ],
+      repeat: [
+        "(Well, there is not a man here.)"
+      ]
+    };
+    const TYPE_SPEED_MS = 28; // ms per character
+    /* ============================================================ */
+
+    const tree = document.getElementById('tree');
+    const box = document.getElementById('dialogue-box');
+    const textEl = document.getElementById('dialogue-text');
+    const choicesEl = document.getElementById('dialogue-choices');
+    const choiceYes = document.getElementById('choice-yes');
+    const choiceNo = document.getElementById('choice-no');
+    const audio = document.getElementById('tree-audio');
+
+    let hasBeenAnswered = false;
+    let sequenceActive = false;
+    let queue = [];
+    let currentIndex = 0;
+    let typing = false;
+    let typeTimer = null;
+    let queueCompleteHandler = null;
+
+    function showBox() {
+      box.classList.remove('hidden');
+      box.classList.add('visible');
+    }
+
+    function hideBox() {
+      box.classList.remove('visible');
+      box.classList.add('hidden');
+      choicesEl.classList.add('hidden');
+      textEl.textContent = '';
+    }
+
+    function typeLine(line, onDone) {
+      typing = true;
+      textEl.textContent = '';
+      let i = 0;
+      clearInterval(typeTimer);
+      typeTimer = setInterval(() => {
+        textEl.textContent += line[i];
+        i++;
+        if (i >= line.length) {
+          clearInterval(typeTimer);
+          typing = false;
+          if (onDone) onDone();
+        }
+      }, TYPE_SPEED_MS);
+    }
+
+    function advanceQueue() {
+      if (!choicesEl.classList.contains('hidden')) return; // waiting on a choice, ignore box clicks
+
+      if (typing) {
+        clearInterval(typeTimer);
+        textEl.textContent = queue[currentIndex];
+        typing = false;
+        return;
+      }
+      currentIndex++;
+      if (currentIndex < queue.length) {
+        typeLine(queue[currentIndex]);
+      } else if (queueCompleteHandler) {
+        queueCompleteHandler();
+      }
+    }
+
+    function playQueue(lines, onComplete) {
+      queue = lines;
+      currentIndex = 0;
+      queueCompleteHandler = onComplete;
+      showBox();
+      typeLine(queue[0]);
+    }
+
+    function startFirstEncounter() {
+      sequenceActive = true;
+      playQueue(DIALOGUE.first, () => {
+        choicesEl.classList.remove('hidden');
+      });
+    }
+
+    function chooseYes() {
+      choicesEl.classList.add('hidden');
+      playQueue(DIALOGUE.yes, () => {
+        box.onclick = finishInteraction;
+      });
+    }
+
+    function chooseNo() {
+      choicesEl.classList.add('hidden');
+      const lines = DIALOGUE.no.length ? DIALOGUE.no : ['(...)'];
+      playQueue(lines, () => {
+        box.onclick = finishInteraction;
+      });
+    }
+
+    function finishInteraction() {
+      hideBox();
+      hasBeenAnswered = true;
+      sequenceActive = false;
+      box.onclick = defaultBoxClick;
+    }
+
+    function repeatEncounter() {
+      sequenceActive = true;
+      playQueue(DIALOGUE.repeat, () => {
+        box.onclick = () => {
+          hideBox();
+          sequenceActive = false;
+          box.onclick = defaultBoxClick;
+        };
+      });
+    }
+
+    function defaultBoxClick() {
+      advanceQueue();
+    }
+    box.onclick = defaultBoxClick;
+
+    choiceYes.addEventListener('click', (e) => {
+      e.stopPropagation();
+      chooseYes();
+    });
+    choiceNo.addEventListener('click', (e) => {
+      e.stopPropagation();
+      chooseNo();
+    });
+
+    tree.addEventListener('click', () => {
+      if (sequenceActive) return;
+      if (!hasBeenAnswered) {
+        startFirstEncounter();
+      } else {
+        repeatEncounter();
+      }
+    });
+
+    /* ---------------- Audio: fades in once the tree scrolls into view ---------------- */
+    audio.muted = true;
+    audio.volume = 0;
+    audio.play().catch(() => {});
+
+    let hasTriggeredAudio = false;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hasTriggeredAudio) {
+          hasTriggeredAudio = true;
+          audio.muted = false;
+          fadeVolume(0.7, 1500);
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+    observer.observe(tree);
+
+    function fadeVolume(target, duration) {
+      const start = audio.volume;
+      const startTime = performance.now();
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        audio.volume = start + (target - start) * progress;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+  </script>
+
+</body>
+</html>
